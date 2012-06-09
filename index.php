@@ -362,11 +362,11 @@ $app_name = idx($app_info, 'name', '');
 		<div class="card-image">
 			<div class="card-template">
 				<section class="card-sect-top">
-					<img class="card-grade" src="images/card/grade/3.png" /> <img
-						class="card-trigger" src="images/card/trigger/critical.png" />
+					<img class="card-grade" src="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/grade/3.png" /> <img
+						class="card-trigger" src="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/trigger/critical.png" />
 				</section>
 				<section class="card-sect-body">
-					<img class="card-shield" src="images/card/shield/10000.png" />
+					<img class="card-shield" src="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/shield/10000.png" />
 				</section>
 				<section class="card-sect-comment">
 					<span class="card-comment">Can you approve my IT tender?</span>
