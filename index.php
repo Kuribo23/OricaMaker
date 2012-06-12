@@ -8,9 +8,14 @@
  * to learn more about the resources available to you
  */
 
+putenv('FACEBOOK_APP_ID=263952977045575');
+putenv('FACEBOOK_SECRET=53a445150c31c64dab6edcef1f356ff0');
+
 // Provides access to app specific values such as your app id and app secret.
 // Defined in 'AppInfo.php'
 require_once('AppInfo.php');
+
+require_once 'lib/aws/sdk.class.php';
 
 // Enforce https on production
 //if (substr(AppInfo::getUrl(), 0, 8) != 'https://' && $_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
@@ -76,6 +81,62 @@ $app_info = $facebook->api('/'. AppInfo::appID());
 
 $app_name = idx($app_info, 'name', '');
 
+$error_summary = array();
+
+$title_val = isset($_POST['title'])?$_POST['title']:'';
+$power_val = isset($_POST['power'])?$_POST['power']:'';
+$comment_val = isset($_POST['comment'])?$_POST['comment']:'';
+$clan_val = isset($_POST['clan'])?$_POST['clan']:'';
+$race_val = isset($_POST['race'])?$_POST['race']:'';
+$grade_val = isset($_POST['grade'])?$_POST['grade']:'0';
+$trigger_val = isset($_POST['trigger'])?$_POST['trigger']:'critical';
+$shield_val = isset($_POST['shield'])?$_POST['shield']:'5000';
+$card_image_url = 'https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/candice.jpg';
+
+if(isset($_POST['submit']))
+{
+	if ((($_FILES["image"]["type"] == "image/gif")
+	|| ($_FILES["image"]["type"] == "image/jpg")
+	|| ($_FILES["image"]["type"] == "image/jpeg")
+	|| ($_FILES["image"]["type"] == "image/pjpeg"))
+	&& ($_FILES["image"]["size"] < 200000))
+	{
+		if ($_FILES["image"]["error"] > 0)
+		{
+			echo array_push($error_summary, "Return Code: " . $_FILES["image"]["error"] . "<br />") ;
+		}
+		else
+		{
+			if (file_exists("upload/" . $_FILES["image"]["name"]))
+			{
+				echo $_FILES["image"]["name"] . " already exists. ";
+			}
+			else
+			{
+				$s3 = new AmazonS3();
+				$s3->use_ssl = false;
+				$bucket = 'vanguarduploads';
+					
+				$exists = $s3->if_bucket_exists($bucket);
+				while(!$exists){
+					sleep(1);
+					$exists = $s3->if_bucket_exists($bucket);
+				}
+					
+				$fileNameFinal = time().$_FILES["image"]["name"];
+				$response = $s3->create_object($bucket, $fileNameFinal,
+					array('fileUpload' => $_FILES["image"]["tmp_name"],
+					'acl' => AmazonS3::ACL_PUBLIC));
+				$card_image_url = $s3->get_object_url($bucket, $fileNameFinal);
+					
+			}
+		}
+	}
+	else
+	{
+		echo "Invalid file";
+	}
+}
 ?>
 <!DOCTYPE html>
 <html xmlns:fb="http://ogp.me/ns/fb#" lang="en">
@@ -85,11 +146,13 @@ $app_name = idx($app_info, 'name', '');
 	content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
 
 <title><?php echo he($app_name); ?></title>
-<link rel="stylesheet" href="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/stylesheets/screen.css" media="Screen"
+<link rel="stylesheet"
+	href="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/stylesheets/screen.css"
+	media="Screen" type="text/css" />
+<link rel="stylesheet" href="https://dl.dropbox.com/u/4302206/vanguardcardmaker/stylesheets/card.css" media="Screen"
 	type="text/css" />
-<link rel="stylesheet" href="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/stylesheets/card.css" media="Screen"
-	type="text/css" />
-<link rel="stylesheet" href="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/stylesheets/mobile.css"
+<link rel="stylesheet"
+	href="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/stylesheets/mobile.css"
 	media="handheld, only screen and (max-width: 480px), only screen and (max-device-width: 480px)"
 	type="text/css" />
 
@@ -111,7 +174,9 @@ $app_name = idx($app_info, 'name', '');
 <meta property="og:description" content="My first app" />
 <meta property="fb:app_id" content="<?php echo AppInfo::appID(); ?>" />
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="javascript/card.js"></script>
 
 <script type="text/javascript">
       function logResponse(response) {
@@ -253,14 +318,6 @@ $app_name = idx($app_info, 'name', '');
 		<?php } ?>
 	</header>
 
-	<section id="get-started">
-		<p>
-			Welcome to <strong>Vanguard CardMaker</strong>, running on <span>heroku</span>!
-		</p>
-		<a href="https://devcenter.heroku.com/articles/facebook" target="_top"
-			class="button">Learn How to Edit This App</a>
-	</section>
-
 	<?php
 	if ($user_id) {
 		?>
@@ -359,17 +416,17 @@ $app_name = idx($app_info, 'name', '');
 	?>
 
 	<section class="card">
-		<div class="card-image">
+		<div class="card-image" style="background: url(<?php echo $card_image_url;?>) no-repeat">
 			<div class="card-template">
 				<section class="card-sect-top">
-					<img class="card-grade" src="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/grade/3.png" /> <img
-						class="card-trigger" src="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/trigger/critical.png" />
+					<img class="card-grade" /> <img class="card-trigger" />
 				</section>
 				<section class="card-sect-body">
-					<img class="card-shield" src="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/shield/10000.png" />
+					<img class="card-shield"
+						src="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/shield/10000.png" />
 				</section>
 				<section class="card-sect-comment">
-					<span class="card-comment">Can you approve my IT tender?</span>
+					<span class="card-comment"></span>
 				</section>
 				<section class="card-sect-ability">
 					<p class="card-ability">Auto : When this Unit attacks a Vanguard,
@@ -379,22 +436,70 @@ $app_name = idx($app_info, 'name', '');
 						If so, for that Battle, this unit gains +10000 Power.</p>
 				</section>
 				<section class="card-sect-title">
-					<span class="card-title">CANDICE OVERLORD</span>
+					<span class="card-title"></span>
 				</section>
 				<section class="card-sect-attrs">
 					<div class="card-attrs-left">
-						<span class="card-power">6900</span>
+						<span class="card-power"></span>
 					</div>
 					<div class="card-attrs-right">
-						<span class="card-clan">Succucos</span> 
-						<span class="card-race">Human</span>
+						<span class="card-clan"></span> <span class="card-race"></span>
 					</div>
 				</section>
 				<section class="card-sect-footer">
-					<span class="card-artist">Desmond</span>
+					<span class="card-artist">Kei Studio</span>
 				</section>
 			</div>
 		</div>
+	</section>
+	<section class="editor">
+		<form method="post" enctype="multipart/form-data"
+			id="vanguardEditor" accept="">			
+			<ul>
+				<li><label>Title :</label> <input type="text" name="title"
+					id="title" value='<?php echo $title_val?>' />
+				</li>
+				<li><label>Power :</label> <input type="text" name="power"
+					id="power"  value='<?php echo $power_val?>' />
+				</li>
+				<li><label>Comment :</label> <input type="text" name="comment"
+					id="comment" value='<?php echo $comment_val?>' />
+				</li>
+				<li><label>Clan :</label> <input type="text" name="clan" id="clan" value='<?php echo $clan_val?>'/>
+				</li>
+				<li><label>Race :</label> <input type="text" name="race" id="race"  value='<?php echo $race_val?>' />
+				</li>
+				<li><label>Grade :</label> <select id="grade"
+					title="please select a value" name="grade">
+						<option>0</option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+				</select>
+				</li>
+				<li><label>Trigger :</label> <select id="trigger"
+					title="please select a trigger" name="trigger">
+						<option>critical</option>
+						<option>Heal</option>
+						<option>Stand</option>
+						<option>Draw</option>
+				</select>
+				</li>
+				<li><label>Shield :</label> <select id="shield"
+					title="please select defence strength" name="shield">
+						<option>0</option>
+						<option>5000</option>
+						<option>10000</option>
+				</select>
+				</li>
+				<li><label>Image :</label> <input type="file" name="image"
+					id="image">
+				</li>
+				<li><input type="submit" name="submit" value="submit" />
+				</li>
+			</ul>
+
+		</form>
 	</section>
 </body>
 </html>
