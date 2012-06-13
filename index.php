@@ -8,8 +8,8 @@
  * to learn more about the resources available to you
  */
 
-//putenv('FACEBOOK_APP_ID=263952977045575');
-//putenv('FACEBOOK_SECRET=53a445150c31c64dab6edcef1f356ff0');
+putenv('FACEBOOK_APP_ID=263952977045575');
+putenv('FACEBOOK_SECRET=53a445150c31c64dab6edcef1f356ff0');
 
 // Provides access to app specific values such as your app id and app secret.
 // Defined in 'AppInfo.php'
@@ -147,7 +147,7 @@ if(isset($_POST['submit']))
 
 <title><?php echo he($app_name); ?></title>
 <link rel="stylesheet"
-	href="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/stylesheets/screen.css"
+	href="https://dl.dropbox.com/u/4302206/vanguardcardmaker/stylesheets/screen.css"
 	media="Screen" type="text/css" />
 <link rel="stylesheet" href="https://dl.dropbox.com/u/4302206/vanguardcardmaker/stylesheets/card.css" media="Screen"
 	type="text/css" />
@@ -453,6 +453,7 @@ if(isset($_POST['submit']))
 		</div>
 	</section>
 	<section class="editor">
+		<h1>Card Details</h1>		
 		<form method="post" enctype="multipart/form-data"
 			id="vanguardEditor" accept="">			
 			<ul>
@@ -495,7 +496,7 @@ if(isset($_POST['submit']))
 				<li><label>Image :</label> <input type="file" name="image"
 					id="image">
 				</li>
-				<li><input type="submit" name="submit" value="submit" />
+				<li><input class="cssbutton" type="submit" name="submit" value="submit" />
 				</li>
 			</ul>
 
