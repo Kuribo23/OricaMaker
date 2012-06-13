@@ -8,14 +8,14 @@
  * to learn more about the resources available to you
  */
 
-putenv('FACEBOOK_APP_ID=263952977045575');
-putenv('FACEBOOK_SECRET=53a445150c31c64dab6edcef1f356ff0');
+//putenv('FACEBOOK_APP_ID=263952977045575');
+//putenv('FACEBOOK_SECRET=53a445150c31c64dab6edcef1f356ff0');
 
 // Provides access to app specific values such as your app id and app secret.
 // Defined in 'AppInfo.php'
 require_once('AppInfo.php');
 
-require_once 'lib/aws/sdk.class.php';
+require_once ('lib/aws/sdk.class.php');
 
 // Enforce https on production
 //if (substr(AppInfo::getUrl(), 0, 8) != 'https://' && $_SERVER['REMOTE_ADDR'] != '127.0.0.1') {

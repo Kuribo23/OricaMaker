@@ -1,0 +1,178 @@
+.card
+{
+	margin: 0px;
+	padding: 0px;
+	width:400px;
+	border : 1px solid #000000;
+	float: left;
+}
+
+.card section
+{		
+/* 	border : 1px solid red; */
+	display : block;	
+}
+
+.card-sect-top
+{
+	height : 110px;
+}
+
+.card-sect-body
+{
+	height : 180px;
+}
+
+.card-sect-comment
+{
+	height : 40px;
+}
+
+.card-sect-ability
+{
+	height : 75px;
+}
+
+.card-sect-title
+{
+	height : 28px
+}
+
+.card-sect-attrs
+{
+	height : 25px;
+}
+
+.card-sect-footer
+{
+	height : 15px;	
+}
+
+.card-ability
+{
+	position : relative;
+	left : 20px;
+	width : 290px;
+	font-family : Georgia, serif;
+	font-size : 10px;
+	font-style : italic;
+	color : black;
+	line-height : 10px;
+}
+
+.card-comment
+{
+	position : relative;
+	left : 80px;
+	font-family : Georgia, serif;
+	font-size : 11px;
+	font-style : italic;
+	color : white;
+}
+
+.card-image 
+{	
+	width : 327px;
+	height: 477px;
+	/*border : 1px dotted black;*/
+	border-radius : 20px;			
+}
+
+.card-template
+{
+	position : relative;
+	background : url('https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/Normal_border.png') center no-repeat;
+	width : 327px;
+	height: 477px;		
+}
+
+.card-grade
+{
+	position : relative;
+	top: 6px;
+	left: 6px;
+	width: 41px;
+	height : 77px;
+}
+
+.card-trigger
+{
+	position : relative;
+	top: 6px;
+	left: 214px;
+}
+
+.card-title
+{
+	position :relative;	
+	left: 85px;
+	font-family : Arial, Helvetica, sans-serif;
+	font-size : 18px;
+	font-style : italic;
+	font-weight : 800;
+	color : black;
+	text-align:center;
+}
+
+.card-sect-attrs div
+{
+	float : left;
+	height: 20px;
+	width:160px;
+/* 	border: 1px solid yellow; */
+}
+
+.card-attrs-right span
+{
+	display : block;
+	position : relative;
+	left : 25px;
+	height: 12px;
+	width:80px;
+/* 	border: 1px solid yellow; */
+	font-family : Arial, Helvetica, sans-serif;	
+	font-style : italic;
+	text-align : center;
+	color : #ffffff;
+}
+
+.card-power
+{
+	position :relative;	
+	left: 68px;
+	font-family : Arial, Helvetica, sans-serif;
+	font-size : 20px;
+	font-style : italic;
+	font-weight : 900;
+	text-shadow: 1px 1px #000000;
+	color : yellow;
+}
+
+.card-clan
+{
+	font-size : 9px;
+	line-height : 9px;
+}
+
+.card-race
+{
+	font-size : 7px;
+	line-height : 10px;
+}
+
+.card-artist
+{
+	position : relative;
+	top : -0.8em;
+	left : 273px;	
+	color : #ffffff;
+	font-size : 7px;
+	line-height : 7px;	
+}
+
+.editor
+{
+	float : left;
+	width : 300px;
+	border : 1px solid #000000;
+}
