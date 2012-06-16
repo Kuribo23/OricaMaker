@@ -43,23 +43,9 @@ $(function(window) {
 		$('.card-shield').attr('src', shieldUrl + $(this).val() + '.png');
 	});
 	$('.card-shield').attr('src', shieldUrl + $('#shield').val() + '.png');
+	
+	$('.editor a img').on('click', function(event){
 		
-	//image upload
-	var preview = $('.card-image');
-	
-	new AjaxUpload('image', {
-		action : $('vanguardEditor').attr('action'),
-		name : 'image',
-		onSubmit: function(file, extension){
-			$('#preview').addClass('loading');
-		},
-		onComplete:function(file, response){
-			preview.load(function(){
-				$('#preview').removeClass('loading');
-				thumb.unbind();
-			});			
-		}	
+		$('#ability_text').append('<img src="'+$(this).attr('src')+'" style="width:28px;height:28px"/>');		
 	});
-	
-	
 })
