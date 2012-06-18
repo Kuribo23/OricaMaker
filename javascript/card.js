@@ -8,7 +8,6 @@ $(function(window) {
 	var triggerUrl = 'https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/trigger/';
 	var shieldUrl = 'https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/shield/';
 
-		
 	$('#title').on('change', function(event) {
 		$('.card-title').text($(this).val());
 	});
@@ -43,9 +42,24 @@ $(function(window) {
 		$('.card-shield').attr('src', shieldUrl + $(this).val() + '.png');
 	});
 	$('.card-shield').attr('src', shieldUrl + $('#shield').val() + '.png');
-	
-	$('.editor a img').on('click', function(event){
-		
-		$('#ability_text').append('<img src="'+$(this).attr('src')+'" style="width:28px;height:28px"/>');		
+
+	$('.editor a img').on(
+			'click',
+			function(event) {
+
+				$('#ability_text').append(
+						'<img src="' + $(this).attr('src')
+								+ '" style="width:28px;height:28px"/>');
+			});
+
+	$('.crop_target').Jcrop();
+
+	$('.dial').dialog({
+		modal : true,
+		buttons : {
+			Ok : function() {
+				$(this).dialog('close');
+			}
+		}
 	});
 })

@@ -38,7 +38,8 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['card/upload'] = "card/upload";
+$route['default_controller'] = "card";
 $route['404_override'] = '';
 
 
