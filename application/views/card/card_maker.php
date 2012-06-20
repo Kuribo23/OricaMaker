@@ -90,6 +90,7 @@ if(isset($_POST['submit']))
 </section>
 <section class="editor">
 <h1>Card Details</h1>
+<img id="loading" src="images/loading.gif" style="display:none;">
 <form method="post" enctype="multipart/form-data" id="vanguardEditor"
 	accept="">
 	<ul>
@@ -131,19 +132,31 @@ if(isset($_POST['submit']))
 				<option>10000</option>
 		</select>
 		</li>		
-		<li><label for="image">Image :</label> <input type="file" name="image"
-			id="image">
+		<li>
+			<label for="image">Image :</label> <input type="file" name="image" id="image">
 		</li>
 		<li><label for="ability">Ability :</label> <a href="#"><img
-				src="https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/ability/meaw.png" />
+				src="images/card/ability/act.png" alt="" />
 		</a> <a href="#"><img
-				src="https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/ability/ninja.png" />
+				src="images/card/ability/auto.png" />
 		</a> <a href="#"><img
-				src="https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/ability/omg.png" />
+				src="images/card/ability/cont.png" />
 		</a> <a href="#"><img
-				src="https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/ability/sick.png" />
+				src="images/card/ability/counter.png" />
 		</a> <a href="#"><img
-				src="https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/ability/slow.png" />
+				src="images/card/ability/rearguard.png" />
+		</a> <a href="#"><img
+				src="images/card/ability/rest.png" />
+		</a> <a href="#"><img
+				src="images/card/ability/soul_blast.png" />
+		</a> <a href="#"><img
+				src="images/card/ability/soul_charge.png" />
+		</a> <a href="#"><img
+				src="images/card/ability/stand.png" />
+		</a> <a href="#"><img
+				src="images/card/ability/sword.png" />
+		</a> <a href="#"><img
+				src="images/card/ability/vanguard.png" />
 		</a>
 			<div id="ability_text" contenteditable="true"></div> <!-- <textarea id="ability_text" rows="5" cols="30" style="resize: none;" name="ability">					
 					</textarea> -->
@@ -154,19 +167,16 @@ if(isset($_POST['submit']))
 	</ul>
 </form>
 </section>
-<div class="dial" style="display:none">
-	<img src="./images/card/candice.jpg" class="crop_target" width="327"
-		height="441" />
-</div>
 
+
+<script
+	src="javascript/ajaxfileupload/ajaxfileupload.js" type="text/javascript"></script>
 <script
 	src="javascript/jcrop/jquery.Jcrop.min.js" type="text/javascript"></script>
 <script
 	src="javascript/jcrop/jquery.color.js" type="text/javascript"></script>
 <script
 	src="javascript/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
-<script
-	src="javascript/fileuploader/fileuploader.js" type="text/javascript"></script>
 <link
 	rel="stylesheet" href="stylesheets/jcrop/jquery.Jcrop.css"
 	media="Screen" type="text/css"></link>

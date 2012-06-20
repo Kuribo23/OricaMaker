@@ -48,18 +48,75 @@ $(function(window) {
 			function(event) {
 
 				$('#ability_text').append(
-						'<img src="' + $(this).attr('src')
-								+ '" style="width:28px;height:28px"/>');
+						'<img src="' + $(this).attr('src') + '"/>');
 			});
-
-	$('.crop_target').Jcrop();
-
-	$('.dial').dialog({
-		modal : true,
-		buttons : {
-			Ok : function() {
-				$(this).dialog('close');
-			}
-		}
+	
+	$("#loading")
+	.ajaxStart(function(){
+		$(this).show();
+	})
+	.ajaxComplete(function(){
+		$(this).hide();
 	});
+
+	
+	$('#preview').bind('click', function(e){
+		e.preventDefault();
+		
+	      $.ajaxFileUpload({
+	         url         :'index.php?/card/upload/',
+	         secureuri      :false,
+	         fileElementId  :'image',
+	         dataType    : 'json',	         
+	         success  : function (data, status)
+	         {
+	            if(data.status != 'error')
+	            {
+	               $('#files').html('<p>Reloading files...</p>');
+	               refresh_files();
+	               $('#title').val('');
+	            }
+	            alert(data.msg);
+	         }
+	      });
+	      return false;
+	});
+	
+	
+	
+	$('#vanguardEditor').submit(function(e) {
+	      e.preventDefault();
+	      $.ajaxFileUpload({
+	         url         :'index.php?/card/upload/',
+	         secureuri      :false,
+	         fileElementId  :'image',
+	         dataType    : 'json',
+	         data        : {
+	            'title'           : $('#title').val()
+	         },
+	         success  : function (data, status)
+	         {
+	            if(data.status != 'error')
+	            {
+	               $('#files').html('<p>Reloading files...</p>');
+	               refresh_files();
+	               $('#title').val('');
+	            }
+	            alert(data.msg);
+	         }
+	      });
+	      return false;
+	   });
+
+	//does the cropping
+	//$('.crop_target').Jcrop();
+
+	//$('.dial').dialog({
+		//modal : true,
+		//buttons : {
+//			Ok : function() {
+				//$(this).dialog('close');
+			//}
+		//}
+	//});
 })

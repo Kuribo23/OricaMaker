@@ -96,7 +96,7 @@ $app_name = idx($app_info, 'name', '');
 	href="https://dl.dropbox.com/u/4302206/vanguardcardmaker/stylesheets/screen.css"
 	media="Screen" type="text/css" />
 <link rel="stylesheet"
-	href="https://dl.dropbox.com/u/4302206/vanguardcardmaker/stylesheets/card.css"
+	href="stylesheets/card.css"
 	media="Screen" type="text/css" />
 <link rel="stylesheet"
 	href="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/stylesheets/mobile.css"

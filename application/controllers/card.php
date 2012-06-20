@@ -9,17 +9,9 @@ class Card extends CI_Controller{
 	}
 
 	//@todo ajax image upload
-	public function upload(){		
-		$this->load->library('UploadedFileForm');
-		$this->load->library('UploadedFileXhr');
-		// list of valid extensions, ex. array("jpeg", "xml", "bmp")
-		$allowedExtensions = array();
-		// max file size in bytes
-		$sizeLimit = 10 * 1024 * 1024;
-
-		$uploader = new $this->fileUploader($allowedExtensions, $sizeLimit);
-		$result = $uploader->handleUpload('index.php?/card/upload');
-		// to pass data through iframe you will need to encode all html tags
-		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+	public function upload(){
+		$status = "success";
+		$msg = "File successfully uploaded";		
+		echo json_encode(array('status' => $status, 'msg' => $msg));
 	}
 }
