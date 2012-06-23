@@ -1,60 +1,5 @@
 <?php
-$error_summary = array();
-
-$title_val = isset($_POST['title'])?$_POST['title']:'';
-$power_val = isset($_POST['power'])?$_POST['power']:'';
-$comment_val = isset($_POST['comment'])?$_POST['comment']:'';
-$clan_val = isset($_POST['clan'])?$_POST['clan']:'';
-$race_val = isset($_POST['race'])?$_POST['race']:'';
-$grade_val = isset($_POST['grade'])?$_POST['grade']:'0';
-$trigger_val = isset($_POST['trigger'])?$_POST['trigger']:'critical';
-$shield_val = isset($_POST['shield'])?$_POST['shield']:'5000';
-$card_image_url = 'https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/candice.jpg';
-
-if(isset($_POST['submit']))
-{
-	if ((($_FILES["image"]["type"] == "image/gif")
-	|| ($_FILES["image"]["type"] == "image/jpg")
-	|| ($_FILES["image"]["type"] == "image/jpeg")
-	|| ($_FILES["image"]["type"] == "image/pjpeg"))
-	&& ($_FILES["image"]["size"] < 200000))
-	{
-		if ($_FILES["image"]["error"] > 0)
-		{
-			echo array_push($error_summary, "Return Code: " . $_FILES["image"]["error"] . "<br />") ;
-		}
-		else
-		{
-			if (file_exists("upload/" . $_FILES["image"]["name"]))
-			{
-				echo $_FILES["image"]["name"] . " already exists. ";
-			}
-			else
-			{
-				$s3 = new AmazonS3();
-				$s3->use_ssl = false;
-				$bucket = 'vanguarduploads';
-					
-				$exists = $s3->if_bucket_exists($bucket);
-				while(!$exists){
-					sleep(1);
-					$exists = $s3->if_bucket_exists($bucket);
-				}
-					
-				$fileNameFinal = time().$_FILES["image"]["name"];
-				$response = $s3->create_object($bucket, $fileNameFinal,
-				array('fileUpload' => $_FILES["image"]["tmp_name"],
-					'acl' => AmazonS3::ACL_PUBLIC));
-				$card_image_url = $s3->get_object_url($bucket, $fileNameFinal);
-					
-			}
-		}
-	}
-	else
-	{
-		echo "Invalid file";
-	}
-}
+$card_image_url = 'https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/candice.jpg'; 
 ?>
 
 <section class="card">
@@ -90,8 +35,9 @@ if(isset($_POST['submit']))
 </section>
 <section class="editor">
 <h1>Card Details</h1>
+
 <img id="loading" src="images/loading.gif" style="display:none;">
-<form method="post" enctype="multipart/form-data" id="vanguardEditor"
+<form method="post" enctype="multipart/form-data" id="vanguardEditor" action="index.php?/card/upload"
 	accept="">
 	<ul>
 		<li><label for="title">Title :</label> <input type="text" name="title"
@@ -133,7 +79,7 @@ if(isset($_POST['submit']))
 		</select>
 		</li>		
 		<li>
-			<label for="image">Image :</label> <input type="file" name="image" id="image">
+			<label for="image">Image :</label> <input type="file" name="image" id="image">			
 		</li>
 		<li><label for="ability">Ability :</label> <a href="#"><img
 				src="images/card/ability/act.png" alt="" />
@@ -167,7 +113,8 @@ if(isset($_POST['submit']))
 	</ul>
 </form>
 </section>
-
+<div id="dialog" title="Image Crop" style="display:none">	
+</div>
 
 <script
 	src="javascript/ajaxfileupload/ajaxfileupload.js" type="text/javascript"></script>
