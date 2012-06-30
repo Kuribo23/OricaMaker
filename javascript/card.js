@@ -2,50 +2,99 @@
  * 
  */
 
-$(function(window) {
+$(function() {
 
-	var gradeUrl = 'https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/grade/';
-	var triggerUrl = 'https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/trigger/';
-	var shieldUrl = 'https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/shield/';
-	var cx, cy, cw, ch; 
+	var cx, cy, cw, ch;
+
+	$('#preview').on('click', function(event) {
+		event.preventDefault;
+		var target = window.card;
+		var clone = $.extend({}, target);
+		var display = '<canvas id="showPreview"/>';
+		$('#dialog').html(display);
+		
+		card.addText({
+			name : 'title',
+			color : 'black',
+			font : 'italic bold 18px sans-serif',
+			text : $('#title').val(),
+			wrap : false,
+			x : 80, y : 408, width : 200,height : 0
+		});
+
+		card.addText({
+			name : 'power',
+			color : 'yellow',
+			font : 'italic bold 20px sans-serif',
+			text : $('#power').val(),
+			wrap : false,
+			shadow : true,
+			x : 55, y : 433, width : 75, height : 0
+		});
+
+		card.addText({
+			name : 'clan',
+			color : 'white',
+			font : 'italic bold 10px sans-serif',
+			text : $('#clan').val(),
+			wrap : false,
+			x : 186, y : 432, width : 84, height : 0
+		});
+
+		card.addText({
+			name : 'race',
+			color : 'white',
+			font : 'italic bold 8px sans-serif',
+			text : $('#race').val(),
+			wrap : false,
+			x : 186, y : 447, width : 84, height : 0
+		});
+
+		card.addText({
+			name : 'comment',
+			color : 'yellow',
+			font : 'italic bold 11px Georgia, serif',
+			text : $('#comment').val(),
+			wrap : false,
+			x : 50, y : 296, width : 220, height : 0
+		});
+		
+		clone.setBackground({
+			canvasName : 'showPreview'
+		});
+
+		$('#dialog').dialog({
+			modal : true,
+			width : 500,
+			buttons : {
+				OK : function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+	});
 
 	$('#title').on('change', function(event) {
-		$('.card-title').text($(this).val());
+		$('#cardTitle').text($(this).val());
 	});
 
 	$('#power').on('change', function(event) {
-		$('.card-power').text($(this).val());
+		$('#cardPower').text($(this).val());
 	});
 
 	$('#comment').on('change', function(event) {
-		$('.card-comment').text($(this).val());
+		$('#cardComment').text($(this).val());
 	});
 
 	$('#clan').on('change', function(event) {
-		$('.card-clan').text($(this).val());
+		$('#cardClan').text($(this).val());
 	});
 
 	$('#race').on('change', function(event) {
-		$('.card-race').text($(this).val());
+		$('#cardRace').text($(this).val());
 	});
-
-	$('#grade').on('change', function(event) {
-		$('.card-grade').attr('src', gradeUrl + $(this).val() + '.png');
-	});
-	$('.card-grade').attr('src', gradeUrl + $('#grade').val() + '.png');
-
-	$('#trigger').on('change', function(event) {
-		$('.card-trigger').attr('src', triggerUrl + $(this).val() + '.png');
-	});
-	$('.card-trigger').attr('src', triggerUrl + $('#trigger').val() + '.png');
-
-	$('#shield').on('change', function(event) {
-		$('.card-shield').attr('src', shieldUrl + $(this).val() + '.png');
-	});
-	$('.card-shield').attr('src', shieldUrl + $('#shield').val() + '.png');
 
 	$('.editor a img').on('click', function(event) {
-
 		$('#ability_text').append('<img src="' + $(this).attr('src') + '"/>');
 	});
 
@@ -55,59 +104,60 @@ $(function(window) {
 		$(this).hide();
 	});
 
-	$('#image').change(function(e) {
-		// e.preventDefault();
-		$.ajaxFileUpload({
-			url : 'index.php?/card/upload/',
-			secureuri : false,
-			fileElementId : 'image',
-			dataType : 'json',
-			success : function(data, status) {
-				if (data.status == 'success') {
-					var imageString = '<img id="crop_target" src="' + data.url + '"/>';
-					$('#dialog').append(imageString);
-					// does the cropping
-					$('#crop_target').Jcrop({
-						aspectRatio: 0.755,
-						onSelect : function(c){
-							cx = c.x;
-							cy = c.y;
-							cw = c.w;
-							ch = c.h;
-						}
-					});
-					$('#dialog').dialog({
-						modal: true,
-						width : 500,
-						buttons: {
-							OK : function(){								
-								$.ajaxFileUpload({
-									url : 'index.php?/card/upload/',
-									secureuri : false,
-									fileElementId : 'image',
-									dataType : 'json',
-									data : {
-										cx:cx,
-										cy:cy,
-										cw:cw,
-										ch:ch
-									},
-									success : function(data, status) {
-										$('.card-image').css('background', 'url("' + data.url + '") center no-repeat');
-									}
-								});
-								
-								$(this).dialog('close');
-							}
-						}
-					});
-				}
-			}
-		});
-		return false;
-	});
-	
-	//var imageString = '<img id="crop_target" src="https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/candice.jpg"/>';
-	
+	$('#image').change(
+			function(e) {
+				// e.preventDefault();
+				$.ajaxFileUpload({
+					url : 'index.php?/card/upload/',
+					secureuri : false,
+					fileElementId : 'image',
+					dataType : 'json',
+					success : function(data, status) {
+						if (data.status == 'success') {
+							var imageString = '<img id="crop_target" src="'
+									+ data.url + '"/>';
+							$('#dialog').append(imageString);
+							// does the cropping
+							$('#crop_target').Jcrop({
+								aspectRatio : 0.755,
+								onSelect : function(c) {
+									cx = c.x;
+									cy = c.y;
+									cw = c.w;
+									ch = c.h;
+								}
+							});
+							$('#dialog').dialog({
+								modal : true,
+								width : 500,
+								buttons : {
+									OK : function() {
+										$.ajaxFileUpload({
+											url : 'index.php?/card/upload/',
+											secureuri : false,
+											fileElementId : 'image',
+											dataType : 'json',
+											data : {
+												cx : cx,
+												cy : cy,
+												cw : cw,
+												ch : ch
+											},
+											success : function(data, status) {
+												window.card.changeImageSource({
+													layerName : 'background',
+													imgSrc : data.url
+												});
+											}
+										});
 
+										$(this).dialog('close');
+									}
+								}
+							});
+						}
+					}
+				});
+				return false;
+			});
 })

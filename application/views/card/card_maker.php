@@ -1,41 +1,19 @@
-<?php
-$card_image_url = 'https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/card/candice.jpg'; 
-?>
-
-<section class="card">
-<div class="card-image" style="background: url(<?php echo $card_image_url;?>) no-repeat">
-	<div class="card-template">
-		<section class="card-sect-top"> <img class="card-grade" /> <img
-			class="card-trigger" /> </section>
-		<section class="card-sect-body"> <img class="card-shield"
-			src="https://s3-ap-southeast-1.amazonaws.com/vanguardcardmaker/images/card/shield/10000.png" />
-		</section>
-		<section class="card-sect-comment"> <span class="card-comment"></span>
-		</section>
-		<section class="card-sect-ability">
-		<p class="card-ability">Auto : When this Unit attacks a Vanguard,
-			during that battle, this Unit gains +3000 power.</p>
-		<p class="card-ability">Auto : [Choose 1 Grade 3 Kagero from your hand
-			and discard it] When this Unit attacks, you may pay the cost. If so,
-			for that Battle, this unit gains +10000 Power.</p>
-		</section>
-		<section class="card-sect-title"> <span class="card-title"></span> </section>
-		<section class="card-sect-attrs">
-		<div class="card-attrs-left">
-			<span class="card-power"></span>
-		</div>
-		<div class="card-attrs-right">
-			<span class="card-clan"></span> <span class="card-race"></span>
-		</div>
-		</section>
-		<section class="card-sect-footer"> <span class="card-artist">Kei
-			Studio</span> </section>
-	</div>
+<div id="canvasWrap">
+	<canvas id="cardCanvas">
+		Your browser does not support the canvas element.
+	</canvas>
+	<span id="cardComment">Come Forth!! My nakamas!!</span>
+	<span id="cardAbility"></span>
+	<span id="cardTitle">Keistic Beast</span>
+	<span id="cardPower">8000</span>
+	<span id="cardClan">Keigerou</span>
+	<span id="cardRace">Keians</span>	
 </div>
-</section>
+
+<a id="preview" href="#">Preview</a>
+
 <section class="editor">
 <h1>Card Details</h1>
-
 <img id="loading" src="images/loading.gif" style="display:none;">
 <form method="post" enctype="multipart/form-data" id="vanguardEditor" action="index.php?/card/upload"
 	accept="">
@@ -113,9 +91,17 @@ $card_image_url = 'https://dl.dropbox.com/u/4302206/vanguardcardmaker/images/car
 	</ul>
 </form>
 </section>
-<div id="dialog" title="Image Crop" style="display:none">	
+<div id="dialog" title="Confirm?" style="display:none">	
 </div>
 
+<link
+	rel="stylesheet" href="stylesheets/cardcanvas.css"
+	media="Screen" type="text/css"></link>
+
+<script
+	src="javascript/orica.js" type="text/javascript"></script>
+<script
+	src="javascript/cardCanvas.js" type="text/javascript"></script>
 <script
 	src="javascript/ajaxfileupload/ajaxfileupload.js" type="text/javascript"></script>
 <script
